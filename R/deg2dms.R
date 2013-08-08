@@ -1,5 +1,5 @@
 deg2dms <-
-function(deg){
+function(deg,type='mat',sep=':'){
 if(any(deg< -90 | deg>90)){stop('All deg values should be -90<=deg<=90')}
     temp = sign(deg)
     deg = abs(deg)
@@ -17,5 +17,9 @@ if(any(deg< -90 | deg>90)){stop('All deg values should be -90<=deg<=90')}
     DEG[temp == -1] = paste("-", DEG[temp == -1], sep = "")
     DEG[temp == 1] = paste("+", DEG[temp == 1], sep = "")
     DEG[temp == 0] = paste("+", DEG[temp == 0], sep = "")
-    output = cbind(DEG, MIN, SEC)
+    if(type=='mat'){output = cbind(DEG, MIN, SEC)}
+    if(type=='cat' & sep!='DMS' & sep!='dms'){output=apply(cbind(DEG, MIN, SEC),1,paste,collapse=sep)}
+    if(type=='cat' & sep=='DMS'){output=paste(paste(paste(DEG,MIN,sep='D'),SEC,sep='M'),c('','',''),sep='S')}
+    if(type=='cat' & sep=='dms'){output=paste(paste(paste(DEG,MIN,sep='d'),SEC,sep='m'),c('','',''),sep='s')}
+return(output)
 }
