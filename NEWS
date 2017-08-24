@@ -4,16 +4,57 @@ Not released on CRAN.
 
 v1.1
 
-Added support for many more ways of specifying deg2dms outputs, e.g. 2d34m45.5s and 2:34:45.5. Code can also take string versions of HMS and DMS coordinates and convert them back to degrees.
+FEATURE: Added support for many more ways of specifying deg2dms outputs, e.g. 2d34m45.5s and 2:34:45.5. Code can also take string versions of HMS and DMS coordinates and convert them back to degrees.
 
 v1.2
 
-Added cosmological distance calculator and a sky area calculator.
+FEATURE: Added cosmological distance calculator and a sky area calculator.
 
 v1.3 (CRAN)
 
-Added individual cosmology routines as separate functions.
+FEATURE: Added individual cosmology routines as separate functions.
 
-Added new cosgrow (structure growth) and cosmap (generic parameter inputs, not just redshift) functions.
+FEATURE: Added new cosgrow (structure growth) and cosmap (generic parameter inputs, not just redshift) functions.
 
-Added sky coordinate matching functionality (coordmatch)
+FEATURE: Added sky coordinate matching functionality (coordmatch)
+
+v1.4 (not on CRAN)
+
+CHANGE: cosdistAngSize is now more accurately named cosdistAngScale
+
+FEATURE: Added NEW cosdistAngSize and cosdistAngArea functions that conpute angular properties of extended sources (e.g. galaxies or halos).
+
+FEATURE: Added cosvararea function, which is a simpler interface to cosvarsph where the assumption is aside=bside.
+
+FEATURE: Added cosgrowRhoMean function, which is the mean matter density as a given redshift
+
+FEATURE: Added NFW profile stuff.
+
+FIXED: cosgrow RhoCrit column had a bug that meant it scaled by H(z) not H(z)^2 (cosgrowRhoCrit had no bug).
+
+FEATURE: Added various Planck related functions (cosplanck).
+
+DOCS: Fixed a couple of document issues.
+
+FEATURE: Added Planck 2015 cosmology to cosref.
+
+FEATURE: Added cosdistCoDist12ang function (and related) for arbitrary comoving separations.
+
+FEATURE: Added Duffy 2008 mass to concentration relation.
+
+FEATURE: Added Driver & Robotham 2010 cosmic variance calculator.
+
+FEATURE: Added cosgrowDeltaVir to find over density compared to critical to Rho_crit from Bryan & Norman (1998).
+
+FEATURE: Added coshaloSigmaToTvir (virial temperature of halo/gas).
+
+FEATURE: Added cosgrowCoVel (cosmological recession velocity).
+
+FEATURE: Added cosgrowPecVel (peculiar velocity).
+
+DOCS: New cosdist examples by John Peacock (discussed when visiting ASGR at ICRAR in 2016).
+
+FEATURE:  Added radec2xy, xy2radec and getpixscale Tan-Gnomonic WCS projection solvers.
+
+FEATURE:  Added cosNFWvcirc and cosNFWvesc functions to compute NFW halo unbinding.
+

@@ -6,13 +6,15 @@
 Cosmological Mapping Functions
 }
 \description{
-Functions for mapping from one arbitrary csomological parameter to another. This includes the provision of a generic interpolation function and another exact value lookup.
+Functions for mapping from one arbitrary cosmological parameter to another. This includes the provision of a generic interpolation function and another exact value lookup.
 }
 \usage{
-cosmapval(val=50, cosparam="CoVol", H0=100, OmegaM=0.3, OmegaL=1-OmegaM, Sigma8=0.8,
-fSigma8=FALSE, zrange=c(-0.99,100), res=100, iter=8, out='cos', degen='lo', ref)
-cosmapfunc(cosparamx="CoVol", cosparamy="z", H0=100, OmegaM=0.3, OmegaL=1-OmegaM,
-Sigma8=0.8, fSigma8=FALSE, zrange=c(0,20), step='z', res=100, degen='lo', ref)
+cosmapval(val=50, cosparam="CoVol", H0=100, OmegaM=0.3, OmegaL=1-OmegaM-OmegaR, OmegaR=0,
+w0=-1, wprime=0, Sigma8=0.8, fSigma8=FALSE, zrange=c(-0.99,100), res=100, iter=8,
+out='cos', degen='lo', ref)
+cosmapfunc(cosparamx="CoVol", cosparamy="z", H0=100, OmegaM=0.3, OmegaL=1-OmegaM-OmegaR,
+OmegaR=0, w0=-1, wprime=0, Sigma8=0.8, fSigma8=FALSE, zrange=c(0,20), step='z', res=100,
+degen='lo', ref)
 }
 
 \arguments{
@@ -20,13 +22,13 @@ Sigma8=0.8, fSigma8=FALSE, zrange=c(0,20), step='z', res=100, degen='lo', ref)
 The value/s to be mapped from parameter cosparamx to parameter cosparamy (this can be a vector or a single number).
 }
   \item{cosparam}{
-Cosmological parameter, must be one of: z, a, CoDist, LumDist, CoDistTran, DistMod, CoVol, UniAgeAtz, TravelTime (see \code{\link{cosdist}} help for further description of these) H, OmegaM, OmegaL, OmegaK, Factor, Rate, RhoCrit (see \code{\link{cosgrow}} help for further description of these). Note that AngDist and AngSize are not an option for cosparam due to degenerate redshift solutions causing problems with the approxfun mapping.
+Cosmological parameter, must be one of: z, a, CoDist, LumDist, CoDistTran, DistMod, CoVol, UniAgeAtz, TravelTime (see \code{\link{cosdist}} help for further description of these) H, CoVel, OmegaM, OmegaL, OmegaK, Factor, Rate, RhoCrit (see \code{\link{cosgrow}} help for further description of these). Note that AngDist and AngSize are not an option for cosparam due to degenerate redshift solutions causing problems with the approxfun mapping.
 }
   \item{cosparamx}{
-Cosmological parameter, must be one of: z, a, CoDist, LumDist, CoDistTran, DistMod, CoVol, UniAgeAtz, TravelTime (see \code{\link{cosdist}} help for further description of these) H, OmegaM, OmegaL, OmegaK, Factor, Rate, RhoCrit (see \code{\link{cosgrow}} help for further description of these). Note that AngDist and AngSize are not an option for cosparamx due to degenerate redshift solutions causing problems with the approxfun mapping.
+Cosmological parameter, must be one of: z, a, CoDist, LumDist, CoDistTran, DistMod, CoVol, UniAgeAtz, TravelTime (see \code{\link{cosdist}} help for further description of these) H, CoVel, OmegaM, OmegaL, OmegaK, Factor, Rate, RhoCrit (see \code{\link{cosgrow}} help for further description of these). Note that AngDist and AngSize are not an option for cosparamx due to degenerate redshift solutions causing problems with the approxfun mapping.
 }
   \item{cosparamy}{
-Cosmological parameter, must be one of: z, a, CoDist, LumDist, AngDist, CoDistTran, DistMod, AngSize CoVol, UniAgeAtz, TravelTime (see \code{\link{cosdist}} help for further description of these) H, OmegaM, OmegaL, OmegaK, Factor, Rate, RhoCrit (see \code{\link{cosgrow}} help for further description of these).
+Cosmological parameter, must be one of: z, a, CoDist, LumDist, AngDist, CoDistTran, DistMod, AngSize CoVol, UniAgeAtz, TravelTime (see \code{\link{cosdist}} help for further description of these) H, CoVel, OmegaM, OmegaL, OmegaK, Factor, Rate, RhoCrit (see \code{\link{cosgrow}} help for further description of these).
 }
   \item{H0}{
     Hubble constant as defined at z=0 (default is H0=100 (km/s)/Mpc).
@@ -35,7 +37,16 @@ Cosmological parameter, must be one of: z, a, CoDist, LumDist, AngDist, CoDistTr
     Omega matter (default is 0.3).
   }
   \item{OmegaL}{
-    Omega Lambda (default is for a flat Universe with OmegaL=1-OmegaM).
+    Omega Lambda (default is for a flat Universe with OmegaL = 1-OmegaM = 0.7).
+  }
+  \item{OmegaR}{
+    Omega Radiation (default is 0, but OmegaM/3400 is typical).
+  }
+  \item{w0}{
+    The value of dark energy equation of state at z=0. See \code{\link{cosgrow}} for more details.
+  }
+  \item{wprime}{
+    The evolution term that governs how the dark energy equation of state evolves with redshift. See \code{\link{cosgrow}} for more details.
   }
   \item{Sigma8}{
     The value of Sigma8 to use if fsigma8=TRUE (by default this is a reasonable 0.8 for simplicity).
@@ -62,7 +73,7 @@ Cosmological parameter, must be one of: z, a, CoDist, LumDist, AngDist, CoDistTr
     In cases where solutions are degenerate (multiple y solutions for a single x), this specifies whether to calculate the lower y solution (degen='lo'), or the higher y solutions (degen='hi').
   }
   \item{ref}{
-    The name of a reference cosmology to use, one of 137 / 737 / Planck / WMAP9 / WMAP7 / WMAP5 / WMAP3 / WMAP1 / Millennium / GiggleZ. See \code{\link{cosref}} for details. This overrides any other settings for H0/ OmegaM and OmegaL. If ref=137 or ref=737 no specific Sigma8 is assumed, instead Sigma8 is set to whatever the input value is set to (by default this is 0.8).
+    The name of a reference cosmology to use, one of 137 / 737 / Planck / Planck13 / Planck15 / WMAP / WMAP9 / WMAP7 / WMAP5 / WMAP3 / WMAP1 / Millennium / GiggleZ. Planck=Planck15 and WMAP=WMAP9. The usage is case insensitive, so wmap9 is an allowed input. See \code{\link{cosref}} for details. This overrides any other settings for H0/ OmegaM and OmegaL. If ref=137 or ref=737 no specific Sigma8 is assumed, instead Sigma8 is set to whatever the input value is set to (by default this is 0.8).
   }
 }
 \details{
@@ -80,7 +91,11 @@ The cosmapval output (when out='cos') includes an additional final column named 
 cosmapfunc uses base R approxfun to map cosparamx onto cosparamy between zrange[1] and zrange[2] in uniform steps of expansion factor (a=1/(1+z)). cosmofunc returns the output function created by approxfun.
 }
 \references{
-Based on the equations in Hogg D.W., 1999, arXiv, 9905116 and Wright E.L., 2006, PASP, 118, 1711
+  Based on the equations in:
+  
+  Hogg D.W., 1999, arXiv, 9905116
+  
+  Wright E.L., 2006, PASP, 118, 1711
 }
 \author{
 Aaron Robotham
@@ -90,6 +105,7 @@ Aaron Robotham
 }
 
 \examples{
+\dontrun{
 tempfunc=cosmapfunc('CoVol', 'UniAgeAtz')
 tempfunc(50)
 
@@ -98,6 +114,7 @@ cosmapval(50:60, 'CoVol')
 #A future prediction:
 
 cosmapval(59, 'H', H0=70)
+}
 }
 
 \keyword{ cosmo }

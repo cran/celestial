@@ -1,11 +1,11 @@
-deg2dms <-
-function(deg,type='mat',sep=':',digits=2){
+deg2dms = function(deg, type='mat', sep=':', digits=2){
 if(any(deg< -90 | deg>90)){stop('All deg values should be -90<=deg<=90')}
     temp = sign(deg)
     deg = abs(deg)
     DEG = floor(deg)
     MIN = floor((deg - DEG) * 60)
     SEC = (deg - DEG - MIN/60) * 3600
+    SEC=round(SEC,digits+2)
     SEC[SEC<0]=0; SEC[SEC>60]=60
     MIN[SEC == 60] = MIN[SEC == 60] + 1
     SEC[SEC == 60] = 0
@@ -22,7 +22,13 @@ if(any(deg< -90 | deg>90)){stop('All deg values should be -90<=deg<=90')}
     DEG[temp == 0] = paste("+", DEG[temp == 0], sep = "")
     if(type=='mat'){output = cbind(DEG, MIN, SEC)}
     if(type=='cat' & sep!='DMS' & sep!='dms'){output=apply(cbind(DEG, MIN, SEC),1,paste,collapse=sep)}
-    if(type=='cat' & sep=='DMS'){output=paste(paste(paste(DEG,MIN,sep='D'),SEC,sep='M'),c('','',''),sep='S')}
-    if(type=='cat' & sep=='dms'){output=paste(paste(paste(DEG,MIN,sep='d'),SEC,sep='m'),c('','',''),sep='s')}
+    if(type=='cat' & sep=='DMS'){output=paste(DEG,'D',MIN,'M',SEC,'S',sep='')}
+    if(type=='cat' & sep=='dms'){output=paste(DEG,'d',MIN,'m',SEC,'s',sep='')}
+    if(type=='cat' & sep=='symbol'){
+      output={}
+      for(i in 1:length(DEG)){
+        output=c(output, parse(text=paste(DEG[i],'*degree*',MIN[i],'*m*',SEC[i],'*s', sep='')))
+      }
+    }
 return(output)
 }
