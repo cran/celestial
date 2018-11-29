@@ -1,21 +1,23 @@
-\name{tanproj}
+\name{skyproj}
 \alias{tanproj}
+\alias{sinproj}
 \alias{radec2xy}
 \alias{xy2radec}
 \alias{gnomonic}
+\alias{orthographic}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Tan Gnomonic Projection Pystem WCS Polver Punctions
+Tan Gnomonic and Sine Orthographic Projection System WCS Solver Functions
 }
 \description{
-Converts RA/Dec (degrees) to x/y (pixels) position using the Tan Gnomonic projection system, and vice-versa.
-Translations adapted from: http://mathworld.wolfram.com/GnomonicProjection.html
+Converts RA/Dec (degrees) to x/y (pixels) position using the Tan Gnomonic or Sine Orthographic projection systems, and vice-versa.
+Translations adapted from: http://mathworld.wolfram.com/GnomonicProjection.html and http://mathworld.wolfram.com/OrthographicProjection.html.
 }
 \usage{
 radec2xy(RA, Dec, header, CRVAL1 = 0, CRVAL2 = 0, CRPIX1 = 0, CRPIX2 = 0, CD1_1 = 1,
-CD1_2 = 0, CD2_1 = 0, CD2_2 = 1)
+CD1_2 = 0, CD2_1 = 0, CD2_2 = 1, CTYPE1 = 'RA--TAN', CTYPE2 = 'DEC--TAN')
 xy2radec(x, y, header, CRVAL1 = 0, CRVAL2 = 0, CRPIX1 = 0, CRPIX2 = 0, CD1_1 = 1,
-CD1_2 = 0, CD2_1 = 0, CD2_2 = 1)
+CD1_2 = 0, CD2_1 = 0, CD2_2 = 1, CTYPE1 = 'RA--TAN', CTYPE2 = 'DEC--TAN')
 }
 
 \arguments{
@@ -32,35 +34,41 @@ Vector or matrix; target x-pixel. If Matrix then the first column will be used a
 Vector; target y-pixel. Ignored if \option{x} is a matrix.
 }
   \item{CRVAL1}{
-FITS header CRVAL1 for the Tan Gnomonic projection system. This is the RA in degrees at the location of \option{CRPIX1}.
+FITS header CRVAL1 for the \option{CTYPE1} projection system. This is the RA in degrees at the location of \option{CRPIX1}.
 }
   \item{CRVAL2}{
-FITS header CRVAL2 for the Tan Gnomonic projection system. This is the Dec in degrees at the location of \option{CRPIX2}.
+FITS header CRVAL2 for the \option{CTYPE2} projection system. This is the Dec in degrees at the location of \option{CRPIX2}.
 }
   \item{CRPIX1}{
-FITS header CRPIX1 for the Tan Gnomonic projection system. This is the x pixel value at the location of \option{CRVAL1}.
+FITS header CRPIX1 for the \option{CTYPE1} projection system. This is the x pixel value at the location of \option{CRVAL1}.
 }
   \item{CRPIX2}{
-FITS header CRPIX2 for the Tan Gnomonic projection system. This is the y pixel value at the location of \option{CRVAL2}.
+FITS header CRPIX2 for the \option{CTYPE2} projection system. This is the y pixel value at the location of \option{CRVAL2}.
 }
   \item{CD1_1}{
-FITS header CD1_1 for the Tan Gnomonic projection system. Change in RA-Tan in degrees along x-Axis.
+FITS header CD1_1 for the \option{CTYPE1} projection system. Change in \option{CTYPE1} in degrees along x-Axis.
 }
   \item{CD1_2}{
-FITS header CD1_2 for the Tan Gnomonic projection system. Change in RA-Tan in degrees along y-Axis.
+FITS header CD1_2 for the \option{CTYPE1} projection system. Change in \option{CTYPE1} in degrees along y-Axis.
 }
   \item{CD2_1}{
-FITS header CD2_1 for the Tan Gnomonic projection system. Change in Dec-Tan in degrees along x-Axis.
+FITS header CD2_1 for the \option{CTYPE2} projection system. Change in \option{CTYPE2} in degrees along x-Axis.
 }
   \item{CD2_2}{
-FITS header CD2_2 for the Tan Gnomonic projection system. Change in Dec-Tan in degrees along y-Axis.
+FITS header CD2_2 for the \option{CTYPE2} projection system. Change in \option{CTYPE2} in degrees along y-Axis.
+}
+  \item{CTYPE1}{
+The RA projection system type. Either 'RA--TAN' for Tan Gnomonic (default), or 'RA--SIN' for Sine Orthographic. 'RA--NCP' is approximated by Sine Orthographic with a warning. Over-ridden by the FITS header.  
+}
+  \item{CTYPE2}{
+The DEC projection system type. Either 'DEC--TAN' for Tan Gnomonic (default), or 'DEC--SIN' for Sine Orthographic. 'DEC--NCP' is approximated by Sine Orthographic with a warning. Over-ridden by the FITS header.  
 }
   \item{header}{
 Full FITS header in table or vector format. Legal table format headers are provided by the \code{read.fitshdr} function or the \option{hdr} list output of \code{read.fits} in the \code{astro} package). Also the \option{hdr} output of \code{readFITS} in the \code{FITSio} package provides legal vector format inputs. If a header is provided then key words will be taken from here as a priority. Missing header keywords are printed out and other header option arguments are used in these cases.
 }
 }
 \details{
-These functions encode the standard FITS Tan Gnomonic projection system for solving an image WCS. They do not deal with higher order polynomial distortion terms.
+These functions encode the standard FITS Tan Gnomonic and Sine Orthographic projection systems for solving an image WCS (covering most moden imaging and radio data). They do not deal with higher order polynomial distortion terms.
 }
 \value{
   \item{radec2xy}{
@@ -72,6 +80,7 @@ Returns a two column matrix with columns RA and Dec (in degrees).
 }
 \references{
 http://mathworld.wolfram.com/GnomonicProjection.html
+http://mathworld.wolfram.com/OrthographicProjection.html
 }
 
 \author{
@@ -84,8 +93,10 @@ Aaron Robotham
 \examples{
 #A simple example:
 
-radec2xy(10,20)
-xy2radec(radec2xy(10,20))
+radec2xy(10, 20)
+xy2radec(radec2xy(10, 20))
+xy2radec(radec2xy(10, 20, CTYPE1='RA--SIN', CTYPE2='DEC--SIN'),
+CTYPE1='RA--SIN',CTYPE2='DEC--SIN')
 
 #A more complicated example, where we transform and rotate large amounts:
 

@@ -107,7 +107,7 @@ w0 = -1, wprime = 0, ref)
     Flag for cosdist function to return age or not- this slows calculation, so is by default turned off.
   }
   \item{ref}{
-    The name of a reference cosmology to use, one of 137 / 737 / Planck / Planck13 / Planck15 / WMAP / WMAP9 / WMAP7 / WMAP5 / WMAP3 / WMAP1 / Millennium / GiggleZ. Planck=Planck15 and WMAP=WMAP9. The usage is case insensitive, so wmap9 is an allowed input. This overrides any other settings for H0, OmegaM and OmegaL. If OmegaR is missing from the reference set then it is inherited from the function input (0 by default). See \code{\link{cosref}} for details.
+    The name of a reference cosmology to use, one of 137 / 737 / Planck / Planck13 / Planck15 / Planck18 / WMAP / WMAP9 / WMAP7 / WMAP5 / WMAP3 / WMAP1 / Millennium / GiggleZ. Planck = Planck18 and WMAP = WMAP9. The usage is case insensitive, so wmap9 is an allowed input. This overrides any other settings for H0, OmegaM and OmegaL. If OmegaR is missing from the reference set then it is inherited from the function input (0 by default). See \code{\link{cosref}} for details.
   }
   \item{error}{
     Flag for cosdist to calculate the relative error for distance/age values.
@@ -146,9 +146,9 @@ w0 = -1, wprime = 0, ref)
     The units of angular coordinate provided for \option{ang}. Allowed options are deg for degrees, amin for arc minutes, asec for arc seconds, and rad for radians.
   }
   \item{outunit}{
-    For \code{cosdistAngSize} units of angular coordinate output. Allowed options are deg for degress, amin for arc minutes, asec for arc seconds, and rad for radians.
+    For \code{cosdistAngSize} units of angular coordinate output. Allowed options are deg for degress (default), amin for arc minutes, asec for arc seconds, and rad for radians.
     
-    For \code{cosdistAngArea} units of angular area output. Allowed options are deg2 for square degrees, amin2 for square arc minutes, asec2 for square arc seconds and rad2 or sr for steradians.
+    For \code{cosdistAngArea} units of angular area output. Allowed options are deg2 for square degrees (default), amin2 for square arc minutes, asec2 for square arc seconds and rad2 or sr for steradians.
   }
 }
 \details{
@@ -215,9 +215,9 @@ The outputs of the standalone functions are:
 
 \item{cosdistAngScale}{Returns the physical projected scale of an object at z in units of kpc/arcsec.}
 
-\item{cosdistAngSize}{Returns the angular size (length or diameter) of an object in arc seconds.}
+\item{cosdistAngSize}{Returns the angular size (length or diameter) of an object (by default in degrees).}
 
-\item{cosdistAngArea}{Returns the angular area of an object in (arc seconds)^2, taking teh specified Size to be the diameter.}
+\item{cosdistAngArea}{Returns the angular area of an object (by default degrees^2), taking the specified Size to be the diameter.}
 
 \item{cosdistCoVol}{Returns the comoving volume of Universe within z in units of Gpc^3.}
 
